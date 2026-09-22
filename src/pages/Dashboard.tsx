@@ -501,7 +501,7 @@ export default function Dashboard({ sessions, updateSession }: DashboardProps) {
             <p className="text-lg mb-6" style={{ color: 'var(--text-secondary)' }}>
               {score >= 80 ? 'Excellent! You have a strong foundation.' :
                 score >= 60 ? 'Good job! Some areas need attention.' :
-                  score >= 40 ? 'Decent start. Let's build your skills.' :
+                  score >= 40 ? "Decent start. Let's build your skills." :
                     "Don't worry — we'll create a path to help you master this!"}
             </p>
 
