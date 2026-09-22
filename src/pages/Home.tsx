@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { SUBJECTS, DIFFICULTY_META, type Subject, type Difficulty } from '../data/subjects';
 import type { LearningSession } from '../App';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, BookOpen, Sparkles, Trash2, GraduationCap, Upload } from 'lucide-react';
+import { ArrowRight, ArrowLeft, BookOpen, Sparkles, Trash2, GraduationCap } from 'lucide-react';
 
 interface HomeProps {
   sessions: LearningSession[];

@@ -59,7 +59,6 @@ export async function searchEducationalVideos(
 
 // Fallback: generate YouTube search links when API key isn't available
 function generateFallbackVideos(query: string, count: number): YouTubeVideo[] {
-  const encodedQuery = encodeURIComponent(query);
   const fallbacks: YouTubeVideo[] = [];
 
   const channels = [

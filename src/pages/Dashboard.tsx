@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import type { LearningSession } from '../App';
-import type { DiagnosticQuestion, LearningPath, LearningModule } from '../utils/gemini';
+import type { DiagnosticQuestion, LearningModule } from '../utils/gemini';
 import { generateDiagnosticQuiz, generateLearningPath, generateShortNotes, chatWithTutor, processPDFContent } from '../utils/gemini';
 import { searchEducationalVideos, getYouTubeWatchUrl, getYouTubeSearchUrl, type YouTubeVideo } from '../utils/youtube';
 import { appendProgressToSheet } from '../utils/sheets';
@@ -11,24 +11,45 @@ import remarkGfm from 'remark-gfm';
 import { extractTextFromPDF } from '../utils/pdf';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ArrowLeft, ArrowRight, CheckCircle2, Play, Send, Bot, User,
+  ArrowRight, CheckCircle2, Play, Send, Bot, User,
   BookOpen, Brain, FileText, Sparkles, ChevronDown, ChevronRight,
-  Home, Upload, Lightbulb, Eye, EyeOff, GraduationCap,
-  MessageSquare, Youtube, Loader2, Trophy, Clock, Target, Zap
+  Home, Lightbulb, Eye, EyeOff, Upload,
+  MessageSquare, Loader2, Trophy, Clock, Target, Zap
 } from 'lucide-react';
+
+const YoutubeIcon = ({ size = 20, className = '', style }: { size?: number; className?: string; style?: React.CSSProperties }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className} style={style}>
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+  </svg>
+);
 
 interface DashboardProps {
   sessions: LearningSession[];
   updateSession: (s: LearningSession) => void;
-  deleteSession: (id: string) => void;
+  deleteSession?: (id: string) => void;
 }
 
 type DashboardPhase = 'quiz' | 'results' | 'generating' | 'learning';
 
 export default function Dashboard({ sessions, updateSession }: DashboardProps) {
   const { sessionId, moduleId } = useParams();
-  const navigate = useNavigate();
   const session = sessions.find(s => s.id === sessionId);
+
+  if (!session) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <DashboardView session={session} updateSession={updateSession} moduleId={moduleId} />;
+}
+
+interface DashboardViewProps {
+  session: LearningSession;
+  updateSession: (s: LearningSession) => void;
+  moduleId?: string;
+}
+
+function DashboardView({ session, updateSession, moduleId }: DashboardViewProps) {
+  const navigate = useNavigate();
 
   // Quiz state
   const [phase, setPhase] = useState<DashboardPhase>('quiz');
@@ -64,10 +85,6 @@ export default function Dashboard({ sessions, updateSession }: DashboardProps) {
 
   // Sidebar state
   const [sidebarOpen, setSidebarOpen] = useState(true);
-
-  if (!session) {
-    return <Navigate to="/" replace />;
-  }
 
   // Determine phase based on session state
   useEffect(() => {
@@ -797,7 +814,7 @@ export default function Dashboard({ sessions, updateSession }: DashboardProps) {
                       {/* YouTube Videos */}
                       <div className="mb-10">
                         <h3 className="text-lg font-bold mb-4 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-                          <Youtube size={20} style={{ color: '#FF0000' }} /> Recommended Videos
+                          <YoutubeIcon size={20} style={{ color: '#FF0000' }} /> Recommended Videos
                         </h3>
                         {videosLoading ? (
                           <div className="flex items-center gap-2 p-4" style={{ color: 'var(--text-secondary)' }}>
@@ -839,7 +856,7 @@ export default function Dashboard({ sessions, updateSession }: DashboardProps) {
                             rel="noreferrer"
                             className="glass-card p-4 flex items-center gap-3 hover:scale-[1.01] transition-all"
                           >
-                            <Youtube size={24} style={{ color: '#FF0000' }} />
+                            <YoutubeIcon size={24} style={{ color: '#FF0000' }} />
                             <span style={{ color: 'var(--text-primary)' }}>Search YouTube for videos on "{activeModule.title}"</span>
                             <ArrowRight size={16} className="ml-auto" style={{ color: 'var(--text-secondary)' }} />
                           </a>
