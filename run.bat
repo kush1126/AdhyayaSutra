@@ -64,7 +64,8 @@ echo [INFO] Press Ctrl+C in this terminal if you ever want to stop the server.
 echo ================================================================
 echo.
 
-:: 5. Launch Vite server
+:: 5. Open in default browser and launch Vite server
+start "" http://localhost:3000
 call npm run dev -- --port 3000 --host
 
 echo.
