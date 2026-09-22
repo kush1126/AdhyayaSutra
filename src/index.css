@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #f8f7f4;
+  --bg-secondary: #ffffff;
+  --text-primary: #1a1a2e;
+  --text-secondary: #6b7280;
+  --accent: #6c5ce7;
+  --accent-light: #a29bfe;
+  --accent-glow: rgba(108, 92, 231, 0.15);
+  --success: #00b894;
+  --warning: #fdcb6e;
+  --danger: #e17055;
+  --border: rgba(0, 0, 0, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --glass: rgba(255, 255, 255, 0.6);
+}
+
+.dark {
+  --bg-primary: #0f0a1a;
+  --bg-secondary: #1a1333;
+  --text-primary: #f0eef6;
+  --text-secondary: #9ca3af;
+  --accent: #a29bfe;
+  --accent-light: #6c5ce7;
+  --accent-glow: rgba(162, 155, 254, 0.15);
+  --success: #55efc4;
+  --warning: #ffeaa7;
+  --danger: #fab1a0;
+  --border: rgba(255, 255, 255, 0.08);
+  --card-bg: rgba(26, 19, 51, 0.8);
+  --glass: rgba(15, 10, 26, 0.6);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent-glow);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Animated gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe, #fd79a8, #6c5ce7);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Glow effect */
+.glow-card {
+  position: relative;
+  overflow: hidden;
+}
+.glow-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+/* Pulse animation for loading states */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Stagger children animations */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
+
+/* Glass morphism card */
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+/* Quiz option styles */
+.quiz-option {
+  transition: all 0.2s ease;
+}
+.quiz-option:hover:not(:disabled) {
+  transform: translateX(4px);
+  border-color: var(--accent);
+}
+.quiz-option.correct {
+  border-color: var(--success) !important;
+  background: rgba(0, 184, 148, 0.1) !important;
+}
+.quiz-option.incorrect {
+  border-color: var(--danger) !important;
+  background: rgba(225, 112, 85, 0.1) !important;
+}
+.quiz-option.was-correct {
+  border-color: var(--success) !important;
+  background: rgba(0, 184, 148, 0.05) !important;
+}
+
+/* Progress ring */
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.5s ease;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+/* Prose customization for markdown content */
+.prose-custom h1 { @apply text-2xl font-bold mb-4 text-[var(--text-primary)]; }
+.prose-custom h2 { @apply text-xl font-bold mb-3 mt-6 text-[var(--text-primary)]; }
+.prose-custom h3 { @apply text-lg font-semibold mb-2 mt-4 text-[var(--text-primary)]; }
+.prose-custom p { @apply mb-3 leading-relaxed text-[var(--text-secondary)]; }
+.prose-custom ul { @apply list-disc pl-6 mb-3 space-y-1 text-[var(--text-secondary)]; }
+.prose-custom ol { @apply list-decimal pl-6 mb-3 space-y-1 text-[var(--text-secondary)]; }
+.prose-custom code { @apply bg-[var(--accent-glow)] px-1.5 py-0.5 rounded text-sm font-mono text-[var(--accent)]; }
+.prose-custom pre { @apply bg-[var(--bg-secondary)] p-4 rounded-xl mb-4 overflow-x-auto border border-[var(--border)]; }
+.prose-custom pre code { @apply bg-transparent p-0; }
+.prose-custom blockquote { @apply border-l-4 border-[var(--accent)] pl-4 italic text-[var(--text-secondary)] mb-3; }
+.prose-custom strong { @apply text-[var(--text-primary)] font-semibold; }
+.prose-custom a { @apply text-[var(--accent)] underline hover:opacity-80; }
+.prose-custom table { @apply w-full border-collapse mb-4; }
+.prose-custom th { @apply border border-[var(--border)] px-3 py-2 bg-[var(--accent-glow)] text-left font-semibold; }
+.prose-custom td { @apply border border-[var(--border)] px-3 py-2; }
